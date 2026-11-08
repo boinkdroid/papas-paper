@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Papa's Paper</title>
+<style>
+  :root {
+    --paper: #e9e2d3; --page: #fbf8f1; --ink: #1d1a16; --muted: #6b6257; --rule: #d3c9b6;
+    --accent: #9a4b2f; --error: #9a2f2f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #141210; --page: #1f1c19; --ink: #f3eee4; --muted: #b5ac9f; --rule: #45403a; --accent: #db7a4e; --error: #e07b6f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 560px; margin: 24px auto; padding: 26px 22px 30px; background: var(--page); border: 1px solid var(--rule); }
+  @media (max-width: 600px) { main { margin: 0; min-height: 100vh; border: 0; } }
+  .masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 10px 0 8px; text-align: center; margin-bottom: 22px; }
+  .masthead h1 { margin: 0; font-size: 30px; }
+  .big { font-size: 56px; margin: 6px 0 0; text-align: center; }
+  h2 { font-size: 26px; line-height: 1.2; margin: 0 0 10px; }
+  p { font-size: 18px; line-height: 1.5; margin: 0 0 14px; }
+  .muted { color: var(--muted); font-style: italic; }
+  .error { color: var(--error); }
+  textarea { width: 100%; font: inherit; font-size: 18px; padding: 12px; color: var(--ink); background: var(--page);
+             border: 1px solid var(--rule); border-radius: 10px; resize: vertical; min-height: 140px; }
+  button { margin-top: 14px; width: 100%; padding: 15px; font: inherit; font-size: 19px; color: #fff; background: var(--ink);
+           border: 0; border-radius: 999px; cursor: pointer; }
+  @media (prefers-color-scheme: dark) { button { color: var(--page); } }
+  button:disabled { opacity: 0.5; cursor: default; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="masthead"><h1 id="paper-name">Papa's Paper</h1></div>
+
+  <section id="loading"><p class="muted">One moment…</p></section>
+
+  <section id="problem" hidden><h2>Hmm.</h2><p id="problem-text"></p></section>
+
+  <section id="write" hidden>
+    <p id="reacted" class="big" hidden></p>
+    <p id="reacted-text" hidden></p>
+    <h2 id="write-title"></h2>
+    <p class="muted" id="about"></p>
+    <textarea id="note" maxlength="2000"></textarea>
+    <p class="error" id="write-error" hidden></p>
+    <button id="send">Send</button>
+  </section>
+
+  <section id="sent" hidden>
+    <p class="big">💌</p>
+    <h2>Sent!</h2>
+    <p id="sent-text"></p>
+  </section>
+
+  <section id="unsub" hidden>
+    <h2>Unsubscribe?</h2>
+    <p id="unsub-text"></p>
+    <button id="unsub-yes">Yes, unsubscribe me</button>
+  </section>
+
+  <section id="unsubbed" hidden>
+    <h2>You're unsubscribed</h2>
+    <p>You won't get the paper anymore. You can be added back any time.</p>
+  </section>
+</main>
+<script>
+  // Talks to the Supabase "react" function. Each family member's private token arrives in the link (?t=…).
+  const API = "https://qmlhgsjccwkncpwfpjxs.supabase.co/functions/v1/react";
+  const params = new URLSearchParams(location.search);
+  const t = params.get("t"), a = params.get("a"), e = params.get("e");
+  const $ = (id) => document.getElementById(id);
+  const show = (id) => {
+    for (const s of document.querySelectorAll("main > section")) s.hidden = s.id !== id;
+  };
+
+  async function call(body) {
+    const response = await fetch(API, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+    return data;
+  }
+
+  function problem(message) {
+    $("problem-text").textContent = message;
+    show("problem");
+  }
+
+  function setPaper(name) {
+    $("paper-name").textContent = `${name}'s Paper`;
+    document.title = `${name}'s Paper`;
+  }
+
+  async function start() {
+    if (!t) return problem("This link doesn't look right. Try tapping it again from the email.");
+
+    if (params.get("unsubscribe") === "1") {
+      $("unsub-text").textContent = "Stop getting this paper by email?";
+      show("unsub");
+      $("unsub-yes").onclick = async () => {
+        $("unsub-yes").disabled = true;
+        try {
+          const data = await call({ t, unsubscribe: true });
+          setPaper(data.storyteller);
+          show("unsubbed");
+        } catch (err) {
+          problem(err.message);
+        }
+      };
+      return;
+    }
+
+    try {
+      const data = await call(e ? { t, a, e } : { t, a });
+      setPaper(data.storyteller);
+      if (data.reacted) {
+        $("reacted").textContent = data.reacted;
+        $("reacted-text").textContent = `Sent to ${data.storyteller}!`;
+        $("reacted").hidden = $("reacted-text").hidden = false;
+        $("reacted-text").style.textAlign = "center";
+      }
+      $("write-title").textContent = data.reacted ? `Want to add a note?` : `Write back to ${data.storyteller}`;
+      $("about").textContent = `About “${data.headline}”`;
+      $("note").placeholder = `Write a note to ${data.storyteller}…`;
+      $("send").textContent = `Send to ${data.storyteller}`;
+      show("write");
+
+      $("send").onclick = async () => {
+        const body = $("note").value.trim();
+        $("write-error").hidden = true;
+        if (!body) {
+          $("write-error").textContent = "Please write a few words first.";
+          $("write-error").hidden = false;
+          return;
+        }
+        $("send").disabled = true;
+        try {
+          await call({ t, a, body });
+          $("sent-text").textContent = `Your note is on its way to ${data.storyteller}.`;
+          show("sent");
+        } catch (err) {
+          $("write-error").textContent = err.message;
+          $("write-error").hidden = false;
+          $("send").disabled = false;
+        }
+      };
+    } catch (err) {
+      problem(err.message);
+    }
+  }
+
+  start();
+</script>
+</body>
+</html>
