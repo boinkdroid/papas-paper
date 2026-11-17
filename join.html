@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ask for the paper</title>
+<style>
+  :root {
+    --paper: #e9e2d3; --page: #fbf8f1; --ink: #1d1a16; --muted: #6b6257; --rule: #d3c9b6;
+    --accent: #9a4b2f; --error: #9a2f2f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #141210; --page: #1f1c19; --ink: #f3eee4; --muted: #b5ac9f; --rule: #45403a; --accent: #db7a4e; --error: #e07b6f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 560px; margin: 24px auto; padding: 26px 22px 30px; background: var(--page); border: 1px solid var(--rule); }
+  @media (max-width: 600px) { main { margin: 0; min-height: 100vh; border: 0; } }
+  .masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 10px 0 8px; text-align: center; margin-bottom: 22px; }
+  .masthead h1 { margin: 0; font-size: 30px; }
+  .big { font-size: 56px; margin: 6px 0 0; text-align: center; }
+  h2 { font-size: 26px; line-height: 1.2; margin: 0 0 10px; }
+  p { font-size: 18px; line-height: 1.5; margin: 0 0 14px; }
+  .muted { color: var(--muted); font-style: italic; }
+  .error { color: var(--error); }
+  label { display: block; font-size: 17px; margin: 16px 0 6px; }
+  input { width: 100%; font: inherit; font-size: 19px; padding: 12px; color: var(--ink); background: var(--page);
+          border: 1px solid var(--rule); border-radius: 10px; }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button { margin-top: 20px; width: 100%; padding: 15px; font: inherit; font-size: 19px; color: #fff; background: var(--ink);
+           border: 0; border-radius: 999px; cursor: pointer; }
+  @media (prefers-color-scheme: dark) { button { color: var(--page); } }
+  button:disabled { opacity: 0.5; cursor: default; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="masthead"><h1 id="paper-name">Papa's Paper</h1></div>
+
+  <section id="loading"><p class="muted">One moment…</p></section>
+
+  <section id="problem" hidden><h2>Hmm.</h2><p id="problem-text"></p></section>
+
+  <form id="ask" hidden novalidate>
+    <h2 id="ask-title"></h2>
+    <p id="ask-about"></p>
+    <label for="name">Your name</label>
+    <input id="name" name="name" autocomplete="name" maxlength="80" required>
+    <label for="email">Your email</label>
+    <input id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required>
+    <div class="trap" aria-hidden="true"><label for="website">Leave this empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+    <p class="error" id="ask-error" hidden></p>
+    <button id="send" type="submit">Ask</button>
+  </form>
+
+  <section id="asked" hidden>
+    <p class="big">📰</p>
+    <h2>Asked!</h2>
+    <p id="asked-text"></p>
+  </section>
+</main>
+<script>
+  // Talks to the Supabase "follow-request" function. The paper comes from the link (?p=…).
+  const API = "https://qmlhgsjccwkncpwfpjxs.supabase.co/functions/v1/follow-request";
+  const p = new URLSearchParams(location.search).get("p");
+  const $ = (id) => document.getElementById(id);
+  const show = (id) => ["loading", "problem", "ask", "asked"].forEach((s) => ($(s).hidden = s !== id));
+
+  async function call(body) {
+    let response;
+    try {
+      response = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p, ...body }) });
+    } catch {
+      throw new Error("We couldn't reach the paper just now. Check your internet connection and try again.");
+    }
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Something went wrong. Try again in a minute.");
+    return data;
+  }
+
+  let paper;
+  (async () => {
+    if (!p) { $("problem-text").textContent = "This link is missing a part. Ask whoever sent it for a new one."; return show("problem"); }
+    try {
+      paper = await call({});
+    } catch (err) {
+      $("problem-text").textContent = err.message;
+      return show("problem");
+    }
+    document.title = paper.paperName;
+    $("paper-name").textContent = paper.paperName;
+    $("ask-title").textContent = `Ask ${paper.name} for the paper`;
+    $("ask-about").textContent = `On days ${paper.name} shares a story, a little newspaper about it arrives by email in the evening. ${paper.name} will see your request in the app and can say yes.`;
+    show("ask");
+    $("name").focus();
+  })();
+
+  $("ask").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const name = $("name").value.trim(), email = $("email").value.trim();
+    $("ask-error").hidden = true;
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      $("ask-error").textContent = "Please type your name and a full email address.";
+      $("ask-error").hidden = false;
+      return;
+    }
+    $("send").disabled = true;
+    try {
+      await call({ name, email, website: $("website").value });
+      $("asked-text").textContent = `We've let ${paper.name} know. Once they say yes, you'll get a welcome email at ${email}, then the paper on evenings there's a story.`;
+      show("asked");
+    } catch (err) {
+      $("ask-error").textContent = err.message;
+      $("ask-error").hidden = false;
+      $("send").disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
