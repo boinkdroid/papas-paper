@@ -3,166 +3,393 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
+<script>
+  // Reaction, reply and unsubscribe links in every paper point here (…/?t=…). Send them on to the reply page.
+  if (/[?&](t|unsubscribe)=/.test(location.search)) location.replace("reply.html" + location.search + location.hash);
+</script>
 <title>Papa's Paper</title>
+<meta name="description" content="Grandpa tells his stories to an iPhone. At six o'clock, the family gets them as a little newspaper by email.">
+<meta property="og:title" content="Papa's Paper">
+<meta property="og:description" content="Grandpa tells his stories to an iPhone. At six o'clock, the family gets them as a little newspaper by email.">
+<meta property="og:image" content="https://papaspaper.com/icon-512.png">
+<meta property="og:url" content="https://papaspaper.com/">
+<meta name="theme-color" content="#f3eee3">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;0,6..72,800;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #e9e2d3; --page: #fbf8f1; --ink: #1d1a16; --muted: #6b6257; --rule: #d3c9b6;
-    --accent: #9a4b2f; --error: #9a2f2f;
+    --newsprint: #f3eee3;
+    --ink: #1b1814;
+    --ink-soft: #3d372f;
+    --muted: #6d6458;
+    --rule: #1b1814;
+    --hairline: #cfc5b2;
+    --red: #a63d1f;
+    --box: #ebe4d5;
+    --grain-opacity: .07;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --paper: #141210; --page: #1f1c19; --ink: #f3eee4; --muted: #b5ac9f; --rule: #45403a; --accent: #db7a4e; --error: #e07b6f; }
+    :root {
+      --newsprint: #1a1815; --ink: #ece5d8; --ink-soft: #d6cebf; --muted: #a79d8f; --rule: #ece5d8;
+      --hairline: #4a443c; --red: #e0805c; --box: #24211d; --grain-opacity: .05;
+    }
   }
+
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
-  main { max-width: 560px; margin: 24px auto; padding: 26px 22px 30px; background: var(--page); border: 1px solid var(--rule); }
-  @media (max-width: 600px) { main { margin: 0; min-height: 100vh; border: 0; } }
-  .masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 10px 0 8px; text-align: center; margin-bottom: 22px; }
-  .masthead h1 { margin: 0; font-size: 30px; }
-  .big { font-size: 56px; margin: 6px 0 0; text-align: center; }
-  h2 { font-size: 26px; line-height: 1.2; margin: 0 0 10px; }
-  p { font-size: 18px; line-height: 1.5; margin: 0 0 14px; }
-  .muted { color: var(--muted); font-style: italic; }
-  .error { color: var(--error); }
-  textarea { width: 100%; font: inherit; font-size: 18px; padding: 12px; color: var(--ink); background: var(--page);
-             border: 1px solid var(--rule); border-radius: 10px; resize: vertical; min-height: 140px; }
-  button { margin-top: 14px; width: 100%; padding: 15px; font: inherit; font-size: 19px; color: #fff; background: var(--ink);
-           border: 0; border-radius: 999px; cursor: pointer; }
-  @media (prefers-color-scheme: dark) { button { color: var(--page); } }
-  button:disabled { opacity: 0.5; cursor: default; }
-  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--newsprint);
+    color: var(--ink);
+    font: 400 1.0625rem/1.55 "Newsreader", Georgia, serif;
+    font-optical-sizing: auto;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+  /* Newsprint grain: a faint noise layer over the whole page. */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 10; opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--red); }
+
+  .sheet { max-width: 1160px; margin: 0 auto; padding: 22px 28px 40px; }
+  @media (max-width: 640px) { .sheet { padding: 14px 16px 32px; } }
+
+  /* Labels, kickers, datelines: a plain sans, the way papers set their furniture. */
+  .label {
+    font: 700 .72rem/1.3 "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: .12em; text-transform: uppercase;
+  }
+
+  /* ---------- Masthead ---------- */
+  .topline { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); padding-bottom: 8px; }
+  .masthead {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
+    border-top: 3px solid var(--rule); padding: 14px 0 6px;
+  }
+  .ear {
+    border: 1px solid var(--rule); padding: 10px 12px; max-width: 190px; text-align: center;
+    font: 500 .8rem/1.35 "Libre Franklin", Arial, sans-serif;
+  }
+  .ear strong { display: block; font-size: .95rem; font-weight: 800; letter-spacing: .02em; }
+  .ear.right { justify-self: end; }
+  .nameplate {
+    margin: 0; text-align: center; font: 400 clamp(3.1rem, 9.5vw, 7.4rem)/.95 "UnifrakturMaguntia", "Old English Text MT", serif;
+    letter-spacing: .01em; white-space: nowrap;
+  }
+  .motto { text-align: center; font-style: italic; color: var(--ink-soft); margin: 4px 0 10px; font-size: 1.05rem; }
+  .dateline {
+    display: flex; justify-content: space-between; gap: 16px; padding: 7px 0;
+    border-top: 1px solid var(--rule); border-bottom: 4px double var(--rule);
+  }
+  @media (max-width: 760px) {
+    .masthead { grid-template-columns: 1fr; gap: 6px; }
+    .ear { display: none; }
+    .nameplate { white-space: normal; }
+    .topline span:nth-child(2), .dateline span:nth-child(3) { display: none; }
+  }
+
+  /* ---------- Front page ---------- */
+  .front { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); margin-top: 22px; }
+  .front > article { padding-right: 28px; border-right: 1px solid var(--hairline); }
+  .front > aside { padding-left: 28px; }
+  @media (max-width: 900px) {
+    .front { grid-template-columns: 1fr; }
+    .front > article { padding-right: 0; border-right: 0; }
+    .front > aside { padding-left: 0; margin-top: 28px; padding-top: 22px; border-top: 3px solid var(--rule); }
+  }
+
+  .kicker { color: var(--red); margin: 0 0 8px; }
+  h2.lead {
+    margin: 0; font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 3.6rem); line-height: 1.02; letter-spacing: -.015em;
+    font-variation-settings: "opsz" 72; text-wrap: balance;
+  }
+  .deck {
+    margin: 12px 0 14px; font-size: clamp(1.15rem, 1.9vw, 1.4rem); line-height: 1.3; font-style: italic;
+    color: var(--ink-soft); text-wrap: pretty;
+  }
+  .byline { color: var(--muted); padding: 8px 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin-bottom: 16px; }
+
+  .lead-body { column-count: 2; column-gap: 28px; column-rule: 1px solid var(--hairline); }
+  @media (max-width: 680px) { .lead-body { column-count: 1; } }
+  .lead-body p, .story p { margin: 0 0 .85em; hyphens: auto; text-wrap: pretty; }
+  @media (min-width: 681px) { .lead-body p { text-align: justify; } }
+  .lead-body > p:first-of-type::first-letter {
+    float: left; font-weight: 800; font-size: 4.3em; line-height: .78; margin: .06em .08em 0 0; font-variation-settings: "opsz" 72;
+  }
+  .place { font: 700 .78em "Libre Franklin", Arial, sans-serif; letter-spacing: .06em; }
+
+  figure.art { margin: 0 0 16px; break-inside: avoid; }
+  figure.art svg { display: block; width: 100%; height: auto; background: var(--box); color: var(--ink); }
+  figcaption { font-size: .85rem; line-height: 1.35; color: var(--muted); padding-top: 6px; border-bottom: 1px solid var(--hairline); padding-bottom: 8px; }
+
+  .reactions {
+    margin: 4px 0 0; padding: 10px 0 0; border-top: 1px solid var(--hairline);
+    display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: .95rem;
+  }
+  .reactions b { color: var(--ink); font-weight: 600; }
+  .sample-note { font-size: .82rem; color: var(--muted); font-style: italic; margin: 10px 0 0; }
+
+  /* Sidebar */
+  aside h3 { margin: 0 0 6px; font-size: 1.45rem; line-height: 1.12; font-weight: 700; text-wrap: balance; }
+  .forecast { border: 2px solid var(--rule); padding: 14px 16px 12px; margin-bottom: 22px; }
+  .forecast .label { display: flex; justify-content: space-between; border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 10px; }
+  .forecast dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: .98rem; }
+  .forecast dt { font-weight: 700; font-variant-numeric: lining-nums; }
+  .forecast dd { margin: 0; color: var(--ink-soft); }
+
+  ol.steps { list-style: none; margin: 0 0 24px; padding: 0; counter-reset: step; }
+  ol.steps li { counter-increment: step; display: grid; grid-template-columns: 2.1rem 1fr; padding: 10px 0; border-top: 1px solid var(--hairline); }
+  ol.steps li:last-child { border-bottom: 1px solid var(--hairline); }
+  ol.steps li::before {
+    content: counter(step); font-weight: 800; font-size: 1.7rem; line-height: 1; font-variation-settings: "opsz" 72; color: var(--red);
+  }
+  ol.steps b { display: block; font-size: 1.05rem; }
+  ol.steps span { color: var(--ink-soft); font-size: .97rem; }
+
+  .get {
+    display: block; text-decoration: none; text-align: center; padding: 16px 14px 14px;
+    background: var(--ink); color: var(--newsprint);
+  }
+  .get:hover { color: var(--newsprint); background: var(--red); }
+  .get .label { display: block; opacity: .8; margin-bottom: 4px; }
+  .get strong { font-size: 1.45rem; line-height: 1.1; font-weight: 700; }
+  .get-note { font-size: .88rem; color: var(--muted); margin: 8px 0 0; text-align: center; }
+
+  /* ---------- Inside pages ---------- */
+  .section-head { display: flex; align-items: center; gap: 14px; margin: 38px 0 18px; }
+  .section-head::before, .section-head::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
+  .section-head span { white-space: nowrap; }
+
+  .inside { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 3px solid var(--rule); }
+  .story { padding: 16px 22px 6px; border-left: 1px solid var(--hairline); }
+  .story:first-child { padding-left: 0; border-left: 0; }
+  .story:last-child { padding-right: 0; }
+  .story h3 { margin: 6px 0 10px; font-size: 1.55rem; line-height: 1.08; font-weight: 700; text-wrap: balance; }
+  @media (max-width: 860px) {
+    .inside { grid-template-columns: 1fr; }
+    .story, .story:first-child, .story:last-child { padding: 16px 0 6px; border-left: 0; }
+    .story + .story { border-top: 1px solid var(--hairline); }
+  }
+
+  .letter {
+    margin: 34px auto 0; max-width: 700px; padding: 24px 28px 20px; background: var(--box);
+    border-top: 3px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .letter h3 { margin: 6px 0 12px; font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+  .letter p:not(.label) { margin: 0 0 .8em; font-size: 1.12rem; }
+  .letter .sig { font-style: italic; text-align: right; margin: 0; }
+  @media (max-width: 640px) { .letter { padding: 20px 18px 16px; } }
+
+  /* ---------- Classifieds (the footer) ---------- */
+  .classifieds { columns: 4 210px; column-gap: 18px; column-rule: 1px solid var(--hairline); border-top: 3px solid var(--rule); padding-top: 14px; }
+  .ad { break-inside: avoid; border: 1px solid var(--rule); padding: 10px 12px; margin: 0 0 14px; font-size: .92rem; line-height: 1.4; }
+  .ad .label { display: block; margin-bottom: 3px; font-size: .78rem; }
+  .ad p { margin: 0; }
+  .ad.dark { background: var(--ink); color: var(--newsprint); border-color: var(--ink); }
+
+  footer.colophon {
+    margin-top: 14px; padding-top: 10px; border-top: 4px double var(--rule);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--muted);
+  }
+  footer.colophon nav { display: flex; gap: 18px; }
+
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 </style>
 </head>
 <body>
-<main>
-  <div class="masthead"><h1 id="paper-name">Papa's Paper</h1></div>
+<div class="sheet">
 
-  <section id="loading"><p class="muted">One moment…</p></section>
+  <header>
+    <div class="topline label">
+      <span id="volume">Vol. I &middot; No. 1</span>
+      <span>Set in type from the spoken word</span>
+      <span>Est. 2026</span>
+    </div>
+    <div class="masthead">
+      <div class="ear"><strong>Free</strong>Two buttons. No typing. For iPhone.</div>
+      <h1 class="nameplate">Papa&rsquo;s Paper</h1>
+      <div class="ear right"><strong>Delivered daily</strong>By email at six o&rsquo;clock, his time.</div>
+    </div>
+    <p class="motto">&ldquo;All the stories he&rsquo;s been meaning to tell you.&rdquo;</p>
+    <div class="dateline label">
+      <span id="today">Tuesday, November 17, 2026</span>
+      <span>papaspaper.com</span>
+      <span>Late edition</span>
+    </div>
+  </header>
 
-  <section id="problem" hidden><h2>Hmm.</h2><p id="problem-text"></p></section>
+  <main>
+    <div class="front">
+      <article aria-labelledby="lead">
+        <p class="kicker label">Family &amp; Home</p>
+        <h2 class="lead" id="lead">Grandfather, 84, Finally Tells the Whole Story of the Cherry Dip Cone</h2>
+        <p class="deck">The family had heard bits of it at every Thanksgiving for forty years. On Tuesday it arrived in their inboxes at six, start to finish, with a headline.</p>
+        <p class="byline label">From the sample edition &middot; Told out loud, set in type</p>
 
-  <section id="write" hidden>
-    <p id="reacted" class="big" hidden></p>
-    <p id="reacted-text" hidden></p>
-    <h2 id="write-title"></h2>
-    <p class="muted" id="about"></p>
-    <textarea id="note" maxlength="2000"></textarea>
-    <p class="error" id="write-error" hidden></p>
-    <button id="send">Send</button>
-  </section>
+        <div class="lead-body">
+          <figure class="art">
+            <svg viewBox="0 0 400 300" role="img" aria-labelledby="cone-title">
+              <title id="cone-title">A drawing, in newspaper dots, of an ice cream cone dipped in cherry coating</title>
+              <defs>
+                <pattern id="dots-lg" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+                  <circle cx="3.5" cy="3.5" r="2.6" fill="currentColor"/>
+                </pattern>
+                <pattern id="dots-sm" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+                  <circle cx="3.5" cy="3.5" r="1.1" fill="currentColor"/>
+                </pattern>
+                <pattern id="dots-xs" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+                  <circle cx="4.5" cy="4.5" r=".7" fill="currentColor"/>
+                </pattern>
+                <pattern id="waffle" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <path d="M0 0H15M0 0V15" stroke="currentColor" stroke-width="2.2"/>
+                </pattern>
+                <radialGradient id="shine" cx=".35" cy=".3" r=".5">
+                  <stop offset="0" stop-color="#fff" stop-opacity=".85"/>
+                  <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="400" height="300" fill="url(#dots-xs)" opacity=".35"/>
+              <!-- the cone -->
+              <path d="M150 158 L250 158 L200 292 Z" fill="url(#waffle)" opacity=".75"/>
+              <path d="M150 158 L250 158 L200 292 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M200 160 L250 158 L200 292 Z" fill="url(#dots-sm)" opacity=".55"/>
+              <!-- the dipped top -->
+              <path d="M138 162 C128 136 150 118 168 116 C154 98 170 78 188 77 C182 61 192 44 202 30 C212 44 222 61 216 77
+                       C234 78 250 98 236 116 C254 118 276 136 262 162
+                       C258 172 252 166 247 170 C244 186 236 186 234 171 C224 167 214 173 204 168
+                       C200 182 190 184 188 168 C176 166 166 170 156 166 C152 178 144 178 138 162 Z"
+                    fill="url(#dots-lg)" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M150 128 C168 120 196 120 214 126 M162 95 C178 88 200 88 214 94" fill="none" stroke="var(--box)" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+              <ellipse cx="180" cy="104" rx="26" ry="30" fill="url(#shine)" opacity=".45"/>
+            </svg>
+            <figcaption>The cone in question, as described. Artist&rsquo;s rendering. The real one was red.</figcaption>
+          </figure>
 
-  <section id="sent" hidden>
-    <p class="big">💌</p>
-    <h2>Sent!</h2>
-    <p id="sent-text"></p>
-  </section>
+          <p><span class="place">DECATUR, Ill. &mdash;</span> Every evening at six, a small newspaper lands in the inboxes of the people who love him most. He wrote every word of it. More precisely, he said every word of it, into his iPhone, earlier that afternoon.</p>
+          <p>The app is called Papa&rsquo;s Paper, and it has two big buttons. One says <em>Answer a question</em>, and it asks him something worth answering: who taught him to drive, what the kitchen smelled like on Sundays, what he did the day he got home from the service. The other says <em>Tell a story</em>, and simply listens.</p>
+          <p>When he&rsquo;s done, the app asks a short follow-up or two, the kind a curious grandkid would ask. Then one last question: put it in tonight&rsquo;s paper, or keep it private? Private means private. It is never sent to anyone.</p>
+          <p>At six o&rsquo;clock his time, the day&rsquo;s stories are written up as a proper newspaper, headlines and all, in his words, and emailed to everyone on his list.</p>
+          <p>Nobody in the family has to download anything. They read it like any other email, tap a reaction, or write back. Their notes show up on his phone the next time he opens it.</p>
+          <p>If he tells a story he has told before, the paper notices and runs it as a revisit rather than a rerun. On days he has nothing to say, no paper goes out. Nobody gets a blank page.</p>
 
-  <section id="unsub" hidden>
-    <h2>Unsubscribe?</h2>
-    <p id="unsub-text"></p>
-    <button id="unsub-yes">Yes, unsubscribe me</button>
-  </section>
+          <p class="reactions" aria-label="How the family responded to this story in the sample">
+            <span><b>&#x2764;&#xFE0F; 6</b></span>
+            <span><b>&#x1F602; 3</b></span>
+            <span><b>4</b> replies, including one from Aunt Linda: &ldquo;THAT&rsquo;S why we never went back.&rdquo;</span>
+          </p>
+        </div>
+        <p class="sample-note">This front page is a sample. Yours will be about your grandpa, or your nana, or whoever does the telling in your family.</p>
+      </article>
 
-  <section id="unsubbed" hidden>
-    <h2>You're unsubscribed</h2>
-    <p>You won't get the paper anymore. You can be added back any time.</p>
-  </section>
-</main>
+      <aside aria-label="How it works">
+        <div class="forecast">
+          <p class="label"><span>Tonight&rsquo;s forecast</span><span>His time zone</span></p>
+          <dl>
+            <dt>Morning</dt><dd>A gentle nudge. Got a story from the old days?</dd>
+            <dt>Afternoon</dt><dd>Scattered recollections, some lengthy.</dd>
+            <dt>6:00 PM</dt><dd>Paper arrives. Chance of replies: high.</dd>
+          </dl>
+        </div>
+
+        <p class="kicker label">How it works</p>
+        <h3>From his armchair to their inbox in four steps</h3>
+        <ol class="steps">
+          <li><div><b>He taps a big button.</b><span>Answer a question, or tell a story of his own.</span></div></li>
+          <li><div><b>He talks. The app listens.</b><span>A follow-up or two, never more than four.</span></div></li>
+          <li><div><b>He decides.</b><span>Tonight&rsquo;s paper, or kept private.</span></div></li>
+          <li><div><b>The family reads it at six.</b><span>By email, with a way to write back.</span></div></li>
+        </ol>
+
+        <a class="get" href="https://apps.apple.com/app/id6835598942">
+          <span class="label">Coming soon</span>
+          <strong>Papa&rsquo;s Paper on the App Store</strong>
+        </a>
+        <p class="get-note">Free for iPhone. Set it up for him in about five minutes.</p>
+      </aside>
+    </div>
+
+    <div class="section-head label"><span>Inside this edition</span></div>
+
+    <div class="inside">
+      <section class="story" aria-labelledby="s-family">
+        <p class="kicker label">For the family</p>
+        <h3 id="s-family">Readers Need Nothing but an Email Address</h3>
+        <p>The family doesn&rsquo;t install a thing. He adds your email address, and you get a short welcome note, then the paper on any day there&rsquo;s a story to tell.</p>
+        <p>Not on the list yet? Every paper has a link to ask for it. He gets a big card on his phone that says you&rsquo;d like to read it, and he decides.</p>
+      </section>
+      <section class="story" aria-labelledby="s-private">
+        <p class="kicker label">Privacy</p>
+        <h3 id="s-private">His Stories Stay His</h3>
+        <p>His recordings are used to write his paper and nothing else. No ads, nothing sold, and the AI services we use don&rsquo;t train on what he says.</p>
+        <p>Stories he marks private are never sent to anyone. He can delete his whole paper from the app at any time, and it&rsquo;s gone for good. <a href="privacy.html">Read the privacy policy.</a></p>
+      </section>
+      <section class="story" aria-labelledby="s-design">
+        <p class="kicker label">Design</p>
+        <h3 id="s-design">Built for Big Thumbs and Long Stories</h3>
+        <p>Large type, plain words, two buttons. No menus to get lost in and nothing to type while he&rsquo;s telling a story.</p>
+        <p>He can hear any paper read back to him, and he can tell his stories in English, Spanish and eight other languages.</p>
+      </section>
+    </div>
+
+    <section class="letter" aria-labelledby="editor">
+      <p class="kicker label">From the editor</p>
+      <h3 id="editor">Why There&rsquo;s a Paper at All</h3>
+      <p>I made Papa&rsquo;s Paper for my grandpa. He has more stories than any of us ever had time to hear in one sitting, and he&rsquo;s been planning to tell the big one, his whole life, a chapter at a time.</p>
+      <p>I wanted those stories to have somewhere to land: a little every day, where the whole family could read them and write back. If you have someone like him, I hope it does the same for yours.</p>
+      <p class="sig">Catie, granddaughter and editor</p>
+    </section>
+
+    <div class="section-head label"><span>Classifieds</span></div>
+  </main>
+
+  <footer>
+    <div class="classifieds">
+      <div class="ad">
+        <span class="label">Wanted</span>
+        <p>Grandparents with stories. No experience necessary. Must be willing to talk about the old days. iPhone required.</p>
+      </div>
+      <div class="ad">
+        <span class="label">Lost</span>
+        <p>The rest of that story about the Navy. Last heard at Easter. If found, please record and send in.</p>
+      </div>
+      <div class="ad dark">
+        <span class="label">Family notice</span>
+        <p>Want Grandpa&rsquo;s paper? You don&rsquo;t need the app. Ask him to add you, or ask from the link in any paper.</p>
+      </div>
+      <div class="ad">
+        <span class="label">Help desk</span>
+        <p>Questions, trouble, or kind words: <a href="mailto:support@papaspaper.com">support@papaspaper.com</a>. Answers within a day or two. <a href="support.html">Help page</a>.</p>
+      </div>
+      <div class="ad">
+        <span class="label">For sale</span>
+        <p>Nothing. The paper is free. We don&rsquo;t sell ads, and we don&rsquo;t sell what he tells us.</p>
+      </div>
+    </div>
+
+    <div class="colophon label">
+      <span>&copy; <span id="year">2026</span> Papa&rsquo;s Paper &middot; Printed nowhere, delivered by email</span>
+      <nav aria-label="Site">
+        <a href="support.html">Support</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@papaspaper.com">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
 <script>
-  // Talks to the Supabase "react" function. Each family member's private token arrives in the link (?t=…).
-  const API = "https://qmlhgsjccwkncpwfpjxs.supabase.co/functions/v1/react";
-  const params = new URLSearchParams(location.search);
-  const t = params.get("t"), a = params.get("a"), e = params.get("e");
-  const $ = (id) => document.getElementById(id);
-  const show = (id) => {
-    for (const s of document.querySelectorAll("main > section")) s.hidden = s.id !== id;
-  };
-
-  async function call(body) {
-    let response;
-    try {
-      response = await fetch(API, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(body),
-      });
-    } catch {
-      throw new Error("We couldn't reach the paper just now. Check your internet connection and try again.");
-    }
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "Something went wrong. Please try again.");
-    return data;
-  }
-
-  function problem(message) {
-    $("problem-text").textContent = message;
-    show("problem");
-  }
-
-  function setPaper(name) {
-    $("paper-name").textContent = `${name}'s Paper`;
-    document.title = `${name}'s Paper`;
-  }
-
-  async function start() {
-    if (!t) return problem("This link doesn't look right. Try tapping it again from the email.");
-
-    if (params.get("unsubscribe") === "1") {
-      $("unsub-text").textContent = "Stop getting this paper by email?";
-      show("unsub");
-      $("unsub-yes").onclick = async () => {
-        $("unsub-yes").disabled = true;
-        try {
-          const data = await call({ t, unsubscribe: true });
-          setPaper(data.storyteller);
-          show("unsubbed");
-        } catch (err) {
-          problem(err.message);
-        }
-      };
-      return;
-    }
-
-    try {
-      const data = await call(e ? { t, a, e } : { t, a });
-      setPaper(data.storyteller);
-      if (data.reacted) {
-        $("reacted").textContent = data.reacted;
-        $("reacted-text").textContent = `Sent to ${data.storyteller}!`;
-        $("reacted").hidden = $("reacted-text").hidden = false;
-        $("reacted-text").style.textAlign = "center";
-      }
-      $("write-title").textContent = data.reacted ? `Want to add a note?` : `Write back to ${data.storyteller}`;
-      $("about").textContent = `About “${data.headline}”`;
-      $("note").placeholder = `Write a note to ${data.storyteller}…`;
-      $("send").textContent = `Send to ${data.storyteller}`;
-      show("write");
-
-      $("send").onclick = async () => {
-        const body = $("note").value.trim();
-        $("write-error").hidden = true;
-        if (!body) {
-          $("write-error").textContent = "Please write a few words first.";
-          $("write-error").hidden = false;
-          return;
-        }
-        $("send").disabled = true;
-        try {
-          await call({ t, a, body });
-          $("sent-text").textContent = `Your note is on its way to ${data.storyteller}.`;
-          show("sent");
-        } catch (err) {
-          $("write-error").textContent = err.message;
-          $("write-error").hidden = false;
-          $("send").disabled = false;
-        }
-      };
-    } catch (err) {
-      problem(err.message);
-    }
-  }
-
-  start();
+  // Today's date and issue number, like a real front page. (The paper started on November 17, 2026.)
+  const now = new Date();
+  document.getElementById("today").textContent =
+    now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  const issue = Math.max(1, Math.floor((now - new Date(2026, 10, 17)) / 86400000) + 1);
+  document.getElementById("volume").textContent = `Vol. ${["I", "II", "III", "IV", "V"][Math.min(4, now.getFullYear() - 2026)]} · No. ${issue}`;
+  document.getElementById("year").textContent = now.getFullYear();
 </script>
 </body>
 </html>
