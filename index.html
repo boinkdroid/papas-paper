@@ -7,10 +7,10 @@
   // Reaction, reply and unsubscribe links in every paper point here (…/?t=…). Send them on to the reply page.
   if (/[?&](t|unsubscribe)=/.test(location.search)) location.replace("reply.html" + location.search + location.hash);
 </script>
-<title>Papa's Paper: Grandpa's stories, delivered to the family</title>
+<title>Papa's Paper: Your grandparents' stories, delivered to the family</title>
 <meta name="description" content="Grandparents tell their stories out loud. Every evening at 6, the family gets them as a little newspaper by email. Two big buttons, nothing to type. Free for iPhone.">
 <meta property="og:title" content="Papa's Paper">
-<meta property="og:description" content="Grandpa talks. The family gets the paper. Free for iPhone.">
+<meta property="og:description" content="Grandma talks. Grandpa talks. The family gets the paper. Free for iPhone.">
 <meta property="og:image" content="https://papaspaper.com/icon-512.png">
 <meta property="og:url" content="https://papaspaper.com/">
 <meta name="theme-color" content="#f6f1e7">
@@ -62,7 +62,7 @@
     <div class="wrap">
       <div>
         <span class="pill"><svg class="icon"><use href="#i-phone"/></svg>Free for iPhone</span>
-        <h1>Grandpa talks.<br>The family gets <em>the paper.<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 110-8 196-3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></em></h1>
+        <h1><span class="who" id="who">Grandma</span> talks.<br>The family gets <em>the paper.<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 110-8 196-3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></em></h1>
         <p class="lede">Papa&rsquo;s Paper turns a grandparent&rsquo;s spoken stories into a little newspaper that lands in the whole family&rsquo;s inbox <b>every evening at 6</b>. Two big buttons. <b>Nothing to type.</b></p>
         <div class="cta-row" id="get">
           <a class="store" href="https://apps.apple.com/app/id6835598942">
@@ -81,13 +81,13 @@
 
       <div class="stage" aria-label="The Papa's Paper app">
         <div class="phone back"><img src="img/1-home.jpg" alt="Home screen with two big buttons: Answer a question, and Tell a story" width="600" height="1304"></div>
-        <div class="phone front"><img src="img/2-listening.jpg" alt="The app listening while he answers: Tell me about the house you grew up in" width="600" height="1304"></div>
-        <div class="notif" role="img" aria-label="Email notification: Papa's Paper, The Cherry Dip Cone, Explained at Last">
+        <div class="phone front"><img src="img/2-listening.jpg" alt="The app listening to an answer: Tell me about the house you grew up in" width="600" height="1304"></div>
+        <div class="notif" role="img" aria-label="Email notification: Nana's Paper, The Night the Power Went Out on Christmas Eve">
           <img src="apple-touch-icon.png" alt="" width="40" height="40">
           <div>
             <div class="when"><span>Mail</span><span>6:00 PM</span></div>
-            <b>Papa&rsquo;s Paper &middot; No. 12</b>
-            The Cherry Dip Cone, Explained at Last
+            <b>Nana&rsquo;s Paper &middot; No. 31</b>
+            The Night the Power Went Out on Christmas Eve
           </div>
         </div>
       </div>
@@ -97,7 +97,7 @@
   <div class="numbers">
     <ul class="wrap">
       <li><strong>2</strong><span>big buttons.<br>That&rsquo;s the whole app.</span></li>
-      <li><strong>0</strong><span>typing while he<br>tells a story</span></li>
+      <li><strong>0</strong><span>typing while they<br>tell a story</span></li>
       <li><strong>6&nbsp;PM</strong><span>a fresh paper,<br>every evening</span></li>
       <li><strong>0</strong><span>apps for the family<br>to install</span></li>
     </ul>
@@ -107,26 +107,26 @@
     <div class="wrap">
       <div class="head center">
         <span class="eyebrow">How it works</span>
-        <h2>From his armchair to their inbox</h2>
-        <p>He tells the story. We set it in type. Everyone reads it with dinner.</p>
+        <h2>From their armchair to your inbox</h2>
+        <p>Grandma or Grandpa tells the story. We set it in type. Everyone reads it with dinner.</p>
       </div>
       <ol class="steps">
         <li class="step">
           <div class="badge" style="background:var(--terracotta)"><svg class="icon"><use href="#i-mic"/></svg></div>
-          <h3><small>Step 1</small>He talks</h3>
-          <p>He taps <b>Answer a question</b> or <b>Tell a story</b> and just talks. The app asks a follow-up or two, like a curious grandkid would.</p>
+          <h3><small>Step 1</small>They talk</h3>
+          <p>They tap <b>Answer a question</b> or <b>Tell a story</b> and just talk. The app asks a follow-up or two, like a curious grandkid would.</p>
           <div class="shot"><img src="img/2-listening.jpg" alt="" width="600" height="1304" loading="lazy"></div>
         </li>
         <li class="step">
           <div class="badge" style="background:var(--navy)"><svg class="icon"><use href="#i-paper"/></svg></div>
           <h3><small>Step 2</small>We write it up</h3>
-          <p>At 6 PM his time, the day&rsquo;s stories become a real little newspaper, with headlines, in his own words.</p>
+          <p>At 6 PM their time, the day&rsquo;s stories become a real little newspaper, with headlines, in their own words.</p>
           <div class="shot"><img src="img/5-paper.jpg" alt="" width="600" height="1304" loading="lazy"></div>
         </li>
         <li class="step">
           <div class="badge" style="background:var(--green)"><svg class="icon"><use href="#i-heart"/></svg></div>
           <h3><small>Step 3</small>Family writes back</h3>
-          <p>Everyone on his list gets it by email. One tap to react, or write back. He sees every note on his phone.</p>
+          <p>Everyone on their list gets it by email. One tap to react, or write back. They see every note on their phone.</p>
           <div class="shot email"><img src="img/email-paper.jpg" alt="" width="1120" height="2160" loading="lazy"></div>
         </li>
       </ol>
@@ -137,16 +137,16 @@
     <div class="wrap">
       <div class="head">
         <span class="eyebrow">For grandparents</span>
-        <h2>So simple he&rsquo;ll figure it out before you finish explaining</h2>
-        <p>Big type, plain words, and nothing hidden in menus. If he can answer the phone, he can make a paper.</p>
+        <h2>So simple they&rsquo;ll figure it out before you finish explaining</h2>
+        <p>Big type, plain words, and nothing hidden in menus. If they can answer the phone, they can make a paper.</p>
       </div>
       <div class="features">
         <div class="feature"><svg class="icon"><use href="#i-tap"/></svg><h3>Two big buttons</h3><p>&ldquo;Answer a question&rdquo; or &ldquo;Tell a story.&rdquo; That&rsquo;s the whole home screen.</p></div>
         <div class="feature"><svg class="icon"><use href="#i-question"/></svg><h3>Good questions</h3><p>Who taught you to drive? What was Sunday dinner like? It asks out loud, and listens.</p></div>
-        <div class="feature"><svg class="icon"><use href="#i-nokeys"/></svg><h3>Nothing to type</h3><p>He talks, then taps &ldquo;I&rsquo;m finished.&rdquo; No keyboard and no spelling.</p></div>
-        <div class="feature"><svg class="icon"><use href="#i-speaker"/></svg><h3>Reads it back</h3><p>Every paper is saved in the app, and one button reads it aloud to him.</p></div>
-        <div class="feature"><svg class="icon"><use href="#i-globe"/></svg><h3>His language</h3><p>Tell stories in English, Spanish, Chinese, Tagalog, Vietnamese and five more.</p></div>
-        <div class="feature"><svg class="icon"><use href="#i-bell"/></svg><h3>A gentle nudge</h3><p>A friendly reminder during the day, so there&rsquo;s something for tonight&rsquo;s paper.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-nokeys"/></svg><h3>Nothing to type</h3><p>Talk, then tap &ldquo;I&rsquo;m finished.&rdquo; No keyboard and no spelling.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-speaker"/></svg><h3>Reads it back</h3><p>Every paper is saved in the app, and one button reads it aloud.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-globe"/></svg><h3>Their language</h3><p>Tell stories in English, Spanish, Chinese, Tagalog, Vietnamese and five more.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-paper"/></svg><h3>Their name on top</h3><p>Nana&rsquo;s Paper, Grandpa Joe&rsquo;s Paper, Abuela&rsquo;s Paper. Each paper is named for whoever tells the stories.</p></div>
       </div>
     </div>
   </section>
@@ -167,11 +167,11 @@
           <p>No app, no account, no password. The paper just shows up.</p>
         </div>
         <ul class="checks">
-          <li><span class="dot"><svg class="icon"><use href="#i-mail"/></svg></span><div><b>Arrives by email at 6</b><span>Only on days he has a story, so it never feels like spam.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-mail"/></svg></span><div><b>Arrives by email at 6</b><span>Only on days there&rsquo;s a story, so it never feels like spam.</span></div></li>
           <li><span class="dot"><svg class="icon"><use href="#i-heart"/></svg></span><div><b>React with one tap</b><span>&#x2764;&#xFE0F; &#x1F602; &#x1F979; &#x1F44F; right from the email.</span></div></li>
-          <li><span class="dot"><svg class="icon"><use href="#i-reply"/></svg></span><div><b>Write back</b><span>Your note shows up on his phone the next time he opens it.</span></div></li>
-          <li><span class="dot"><svg class="icon"><use href="#i-adduser"/></svg></span><div><b>Ask to join</b><span>Every paper has a link to ask for it. He decides who reads it.</span></div></li>
-          <li><span class="dot"><svg class="icon"><use href="#i-repeat"/></svg></span><div><b>Heard it before?</b><span>When he retells a story, the paper notices and runs it as a revisit.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-reply"/></svg></span><div><b>Write back</b><span>Your note shows up on their phone the next time they open the app.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-adduser"/></svg></span><div><b>Ask to join</b><span>Every paper has a link to ask for it. The storyteller decides who reads it.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-repeat"/></svg></span><div><b>Heard it before?</b><span>Retold a favorite? The paper notices and runs it as a revisit.</span></div></li>
         </ul>
         <a class="btn" href="examples.html">See example papers <svg class="icon"><use href="#i-arrow"/></svg></a>
       </div>
@@ -182,13 +182,13 @@
     <div class="wrap">
       <div class="head">
         <span class="eyebrow"><svg class="icon"><use href="#i-shield"/></svg>Privacy</span>
-        <h2>His stories stay his</h2>
-        <p>He decides what goes in the paper and who reads it. <a href="privacy.html">Read the privacy policy</a>.</p>
+        <h2>Their stories stay theirs</h2>
+        <p>They decide what goes in the paper and who reads it. <a href="privacy.html">Read the privacy policy</a>.</p>
       </div>
       <div class="grid">
-        <div class="item"><svg class="icon"><use href="#i-lock"/></svg><h3>Private means private</h3><p>After every story he picks: tonight&rsquo;s paper, or keep it private. Private stories are never sent to anyone.</p></div>
-        <div class="item"><svg class="icon"><use href="#i-shield"/></svg><h3>No ads. Nothing sold.</h3><p>His recordings are only used to make his paper. The AI services we use don&rsquo;t train on them.</p></div>
-        <div class="item"><svg class="icon"><use href="#i-trash"/></svg><h3>Delete anytime</h3><p>One button in the app deletes his whole paper and every recording, for good.</p></div>
+        <div class="item"><svg class="icon"><use href="#i-lock"/></svg><h3>Private means private</h3><p>After every story they pick: tonight&rsquo;s paper, or keep it private. Private stories are never sent to anyone.</p></div>
+        <div class="item"><svg class="icon"><use href="#i-shield"/></svg><h3>No ads. Nothing sold.</h3><p>Recordings are only used to make their paper. The AI services we use don&rsquo;t train on them.</p></div>
+        <div class="item"><svg class="icon"><use href="#i-trash"/></svg><h3>Delete anytime</h3><p>One button in the app deletes the whole paper and every recording, for good.</p></div>
       </div>
     </div>
   </section>
@@ -196,8 +196,8 @@
   <section class="block final">
     <div class="wrap">
       <img class="appicon" src="icon-512.png" alt="Papa's Paper app icon" width="96" height="96">
-      <h2>Give Grandpa a paper.</h2>
-      <p>Set it up for him in five minutes. Read his first edition tonight.</p>
+      <h2>Give Nana a paper. <span style="color:var(--terracotta)">Or Papa.</span></h2>
+      <p>Set it up for them in five minutes. Read their first edition tonight.</p>
       <div class="cta-row">
         <a class="store" href="https://apps.apple.com/app/id6835598942">
           <svg class="icon"><use href="#i-phone"/></svg>
@@ -220,5 +220,16 @@
     <span>&copy; 2026 Papa&rsquo;s Paper</span>
   </div>
 </footer>
+<script>
+  const names = ["Grandma", "Grandpa", "Nana", "Papa", "Abuela", "Grandad"];
+  const who = document.getElementById("who");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let i = 0;
+    setInterval(() => {
+      who.classList.add("out");
+      setTimeout(() => { i = (i + 1) % names.length; who.textContent = names[i]; who.classList.remove("out"); }, 250);
+    }, 2200);
+  }
+</script>
 </body>
 </html>

@@ -25,7 +25,7 @@ body {
   margin: 0; background: var(--paper); color: var(--ink);
   font: 400 1.125rem/1.6 "Libre Franklin", -apple-system, "Helvetica Neue", Arial, sans-serif;
 }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 h1, h2, h3, .serif { font-family: "Newsreader", Georgia, serif; font-optical-sizing: auto; }
 h1, h2, h3 { margin: 0; line-height: 1.05; letter-spacing: -.015em; text-wrap: balance; }
@@ -67,6 +67,8 @@ p { margin: 0; text-wrap: pretty; }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 48px; align-items: center; }
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); font-weight: 700; font-size: .88rem; color: var(--green); }
 .hero h1 { font-size: clamp(2.7rem, 5.6vw, 4.6rem); font-weight: 800; margin: 20px 0 22px; }
+.hero .who { display: inline-block; transition: opacity .25s ease, transform .25s ease; }
+.hero .who.out { opacity: 0; transform: translateY(-.15em); }
 .hero h1 em { font-style: italic; font-weight: 700; color: var(--terracotta); position: relative; white-space: nowrap; }
 .hero h1 em svg { position: absolute; left: 0; right: 0; bottom: -.12em; width: 100%; height: .28em; }
 .lede { font-size: clamp(1.15rem, 1.8vw, 1.35rem); color: var(--muted); max-width: 33em; }
