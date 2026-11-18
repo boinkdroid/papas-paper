@@ -7,389 +7,218 @@
   // Reaction, reply and unsubscribe links in every paper point here (…/?t=…). Send them on to the reply page.
   if (/[?&](t|unsubscribe)=/.test(location.search)) location.replace("reply.html" + location.search + location.hash);
 </script>
-<title>Papa's Paper</title>
-<meta name="description" content="Grandpa tells his stories to an iPhone. At six o'clock, the family gets them as a little newspaper by email.">
+<title>Papa's Paper: Grandpa's stories, delivered to the family</title>
+<meta name="description" content="Grandparents tell their stories out loud. Every evening at 6, the family gets them as a little newspaper by email. Two big buttons, nothing to type. Free for iPhone.">
 <meta property="og:title" content="Papa's Paper">
-<meta property="og:description" content="Grandpa tells his stories to an iPhone. At six o'clock, the family gets them as a little newspaper by email.">
+<meta property="og:description" content="Grandpa talks. The family gets the paper. Free for iPhone.">
 <meta property="og:image" content="https://papaspaper.com/icon-512.png">
 <meta property="og:url" content="https://papaspaper.com/">
-<meta name="theme-color" content="#f3eee3">
+<meta name="theme-color" content="#f6f1e7">
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;0,6..72,800;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --newsprint: #f3eee3;
-    --ink: #1b1814;
-    --ink-soft: #3d372f;
-    --muted: #6d6458;
-    --rule: #1b1814;
-    --hairline: #cfc5b2;
-    --red: #a63d1f;
-    --box: #ebe4d5;
-    --grain-opacity: .07;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --newsprint: #1a1815; --ink: #ece5d8; --ink-soft: #d6cebf; --muted: #a79d8f; --rule: #ece5d8;
-      --hairline: #4a443c; --red: #e0805c; --box: #24211d; --grain-opacity: .05;
-    }
-  }
-
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--newsprint);
-    color: var(--ink);
-    font: 400 1.0625rem/1.55 "Newsreader", Georgia, serif;
-    font-optical-sizing: auto;
-    font-feature-settings: "kern", "liga", "onum";
-  }
-  /* Newsprint grain: a faint noise layer over the whole page. */
-  body::before {
-    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 10; opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  a:hover { color: var(--red); }
-
-  .sheet { max-width: 1160px; margin: 0 auto; padding: 22px 28px 40px; }
-  @media (max-width: 640px) { .sheet { padding: 14px 16px 32px; } }
-
-  /* Labels, kickers, datelines: a plain sans, the way papers set their furniture. */
-  .label {
-    font: 700 .72rem/1.3 "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
-    letter-spacing: .12em; text-transform: uppercase;
-  }
-
-  /* ---------- Masthead ---------- */
-  .topline { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); padding-bottom: 8px; }
-  .masthead {
-    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
-    border-top: 3px solid var(--rule); padding: 14px 0 6px;
-  }
-  .ear {
-    border: 1px solid var(--rule); padding: 10px 12px; max-width: 190px; text-align: center;
-    font: 500 .8rem/1.35 "Libre Franklin", Arial, sans-serif;
-  }
-  .ear strong { display: block; font-size: .95rem; font-weight: 800; letter-spacing: .02em; }
-  .ear.right { justify-self: end; }
-  .nameplate {
-    margin: 0; text-align: center; font: 400 clamp(3.1rem, 9.5vw, 7.4rem)/.95 "UnifrakturMaguntia", "Old English Text MT", serif;
-    letter-spacing: .01em; white-space: nowrap;
-  }
-  .motto { text-align: center; font-style: italic; color: var(--ink-soft); margin: 4px 0 10px; font-size: 1.05rem; }
-  .dateline {
-    display: flex; justify-content: space-between; gap: 16px; padding: 7px 0;
-    border-top: 1px solid var(--rule); border-bottom: 4px double var(--rule);
-  }
-  @media (max-width: 760px) {
-    .masthead { grid-template-columns: 1fr; gap: 6px; }
-    .ear { display: none; }
-    .nameplate { white-space: normal; }
-    .topline span:nth-child(2), .dateline span:nth-child(3) { display: none; }
-  }
-
-  /* ---------- Front page ---------- */
-  .front { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); margin-top: 22px; }
-  .front > article { padding-right: 28px; border-right: 1px solid var(--hairline); }
-  .front > aside { padding-left: 28px; }
-  @media (max-width: 900px) {
-    .front { grid-template-columns: 1fr; }
-    .front > article { padding-right: 0; border-right: 0; }
-    .front > aside { padding-left: 0; margin-top: 28px; padding-top: 22px; border-top: 3px solid var(--rule); }
-  }
-
-  .kicker { color: var(--red); margin: 0 0 8px; }
-  h2.lead {
-    margin: 0; font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 3.6rem); line-height: 1.02; letter-spacing: -.015em;
-    font-variation-settings: "opsz" 72; text-wrap: balance;
-  }
-  .deck {
-    margin: 12px 0 14px; font-size: clamp(1.15rem, 1.9vw, 1.4rem); line-height: 1.3; font-style: italic;
-    color: var(--ink-soft); text-wrap: pretty;
-  }
-  .byline { color: var(--muted); padding: 8px 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin-bottom: 16px; }
-
-  .lead-body { column-count: 2; column-gap: 28px; column-rule: 1px solid var(--hairline); }
-  @media (max-width: 680px) { .lead-body { column-count: 1; } }
-  .lead-body p, .story p { margin: 0 0 .85em; hyphens: auto; text-wrap: pretty; }
-  @media (min-width: 681px) { .lead-body p { text-align: justify; } }
-  .lead-body > p:first-of-type::first-letter {
-    float: left; font-weight: 800; font-size: 4.3em; line-height: .78; margin: .06em .08em 0 0; font-variation-settings: "opsz" 72;
-  }
-  .place { font: 700 .78em "Libre Franklin", Arial, sans-serif; letter-spacing: .06em; }
-
-  figure.art { margin: 0 0 16px; break-inside: avoid; }
-  figure.art svg { display: block; width: 100%; height: auto; background: var(--box); color: var(--ink); }
-  figcaption { font-size: .85rem; line-height: 1.35; color: var(--muted); padding-top: 6px; border-bottom: 1px solid var(--hairline); padding-bottom: 8px; }
-
-  .reactions {
-    margin: 4px 0 0; padding: 10px 0 0; border-top: 1px solid var(--hairline);
-    display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: .95rem;
-  }
-  .reactions b { color: var(--ink); font-weight: 600; }
-  .sample-note { font-size: .82rem; color: var(--muted); font-style: italic; margin: 10px 0 0; }
-
-  /* Sidebar */
-  aside h3 { margin: 0 0 6px; font-size: 1.45rem; line-height: 1.12; font-weight: 700; text-wrap: balance; }
-  .forecast { border: 2px solid var(--rule); padding: 14px 16px 12px; margin-bottom: 22px; }
-  .forecast .label { display: flex; justify-content: space-between; border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 10px; }
-  .forecast dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: .98rem; }
-  .forecast dt { font-weight: 700; font-variant-numeric: lining-nums; }
-  .forecast dd { margin: 0; color: var(--ink-soft); }
-
-  ol.steps { list-style: none; margin: 0 0 24px; padding: 0; counter-reset: step; }
-  ol.steps li { counter-increment: step; display: grid; grid-template-columns: 2.1rem 1fr; padding: 10px 0; border-top: 1px solid var(--hairline); }
-  ol.steps li:last-child { border-bottom: 1px solid var(--hairline); }
-  ol.steps li::before {
-    content: counter(step); font-weight: 800; font-size: 1.7rem; line-height: 1; font-variation-settings: "opsz" 72; color: var(--red);
-  }
-  ol.steps b { display: block; font-size: 1.05rem; }
-  ol.steps span { color: var(--ink-soft); font-size: .97rem; }
-
-  .get {
-    display: block; text-decoration: none; text-align: center; padding: 16px 14px 14px;
-    background: var(--ink); color: var(--newsprint);
-  }
-  .get:hover { color: var(--newsprint); background: var(--red); }
-  .get .label { display: block; opacity: .8; margin-bottom: 4px; }
-  .get strong { font-size: 1.45rem; line-height: 1.1; font-weight: 700; }
-  .get-note { font-size: .88rem; color: var(--muted); margin: 8px 0 0; text-align: center; }
-
-  /* ---------- Inside pages ---------- */
-  .section-head { display: flex; align-items: center; gap: 14px; margin: 38px 0 18px; }
-  .section-head::before, .section-head::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
-  .section-head span { white-space: nowrap; }
-
-  .inside { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 3px solid var(--rule); }
-  .story { padding: 16px 22px 6px; border-left: 1px solid var(--hairline); }
-  .story:first-child { padding-left: 0; border-left: 0; }
-  .story:last-child { padding-right: 0; }
-  .story h3 { margin: 6px 0 10px; font-size: 1.55rem; line-height: 1.08; font-weight: 700; text-wrap: balance; }
-  @media (max-width: 860px) {
-    .inside { grid-template-columns: 1fr; }
-    .story, .story:first-child, .story:last-child { padding: 16px 0 6px; border-left: 0; }
-    .story + .story { border-top: 1px solid var(--hairline); }
-  }
-
-  .letter {
-    margin: 34px auto 0; max-width: 700px; padding: 24px 28px 20px; background: var(--box);
-    border-top: 3px solid var(--rule); border-bottom: 1px solid var(--rule);
-  }
-  .letter h3 { margin: 6px 0 12px; font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
-  .letter p:not(.label) { margin: 0 0 .8em; font-size: 1.12rem; }
-  .letter .sig { font-style: italic; text-align: right; margin: 0; }
-  @media (max-width: 640px) { .letter { padding: 20px 18px 16px; } }
-
-  /* ---------- Classifieds (the footer) ---------- */
-  .classifieds { columns: 4 210px; column-gap: 18px; column-rule: 1px solid var(--hairline); border-top: 3px solid var(--rule); padding-top: 14px; }
-  .ad { break-inside: avoid; border: 1px solid var(--rule); padding: 10px 12px; margin: 0 0 14px; font-size: .92rem; line-height: 1.4; }
-  .ad .label { display: block; margin-bottom: 3px; font-size: .78rem; }
-  .ad p { margin: 0; }
-  .ad.dark { background: var(--ink); color: var(--newsprint); border-color: var(--ink); }
-
-  footer.colophon {
-    margin-top: 14px; padding-top: 10px; border-top: 4px double var(--rule);
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--muted);
-  }
-  footer.colophon nav { display: flex; gap: 18px; }
-
-  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;0,6..72,800;1,6..72,700&family=Libre+Franklin:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-<div class="sheet">
 
-  <header>
-    <div class="topline label">
-      <span id="volume">Vol. I &middot; No. 1</span>
-      <span>Set in type from the spoken word</span>
-      <span>Est. 2026</span>
-    </div>
-    <div class="masthead">
-      <div class="ear"><strong>Free</strong>Two buttons. No typing. For iPhone.</div>
-      <h1 class="nameplate">Papa&rsquo;s Paper</h1>
-      <div class="ear right"><strong>Delivered daily</strong>By email at six o&rsquo;clock, his time.</div>
-    </div>
-    <p class="motto">&ldquo;All the stories he&rsquo;s been meaning to tell you.&rdquo;</p>
-    <div class="dateline label">
-      <span id="today">Tuesday, November 17, 2026</span>
-      <span>papaspaper.com</span>
-      <span>Late edition</span>
-    </div>
-  </header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></symbol>
+  <symbol id="i-paper" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></symbol>
+  <symbol id="i-tap" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="3"/><rect x="3" y="13" width="18" height="8" rx="3"/></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+  <symbol id="i-nokeys" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8M3 3l18 18"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+  <symbol id="i-adduser" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+</svg>
 
-  <main>
-    <div class="front">
-      <article aria-labelledby="lead">
-        <p class="kicker label">Family &amp; Home</p>
-        <h2 class="lead" id="lead">Grandfather, 84, Finally Tells the Whole Story of the Cherry Dip Cone</h2>
-        <p class="deck">The family had heard bits of it at every Thanksgiving for forty years. On Tuesday it arrived in their inboxes at six, start to finish, with a headline.</p>
-        <p class="byline label">From the sample edition &middot; Told out loud, set in type</p>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="apple-touch-icon.png" alt="" width="38" height="38">Papa&rsquo;s Paper</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#grandparents">For grandparents</a>
+      <a href="#families">For families</a>
+      <a href="examples.html">Example papers</a>
+    </nav>
+    <a class="btn small" href="#get">Get the app</a>
+  </div>
+</header>
 
-        <div class="lead-body">
-          <figure class="art">
-            <svg viewBox="0 0 400 300" role="img" aria-labelledby="cone-title">
-              <title id="cone-title">A drawing, in newspaper dots, of an ice cream cone dipped in cherry coating</title>
-              <defs>
-                <pattern id="dots-lg" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
-                  <circle cx="3.5" cy="3.5" r="2.6" fill="currentColor"/>
-                </pattern>
-                <pattern id="dots-sm" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
-                  <circle cx="3.5" cy="3.5" r="1.1" fill="currentColor"/>
-                </pattern>
-                <pattern id="dots-xs" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
-                  <circle cx="4.5" cy="4.5" r=".7" fill="currentColor"/>
-                </pattern>
-                <pattern id="waffle" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                  <path d="M0 0H15M0 0V15" stroke="currentColor" stroke-width="2.2"/>
-                </pattern>
-                <radialGradient id="shine" cx=".35" cy=".3" r=".5">
-                  <stop offset="0" stop-color="#fff" stop-opacity=".85"/>
-                  <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <rect width="400" height="300" fill="url(#dots-xs)" opacity=".35"/>
-              <!-- the cone -->
-              <path d="M150 158 L250 158 L200 292 Z" fill="url(#waffle)" opacity=".75"/>
-              <path d="M150 158 L250 158 L200 292 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-              <path d="M200 160 L250 158 L200 292 Z" fill="url(#dots-sm)" opacity=".55"/>
-              <!-- the dipped top -->
-              <path d="M138 162 C128 136 150 118 168 116 C154 98 170 78 188 77 C182 61 192 44 202 30 C212 44 222 61 216 77
-                       C234 78 250 98 236 116 C254 118 276 136 262 162
-                       C258 172 252 166 247 170 C244 186 236 186 234 171 C224 167 214 173 204 168
-                       C200 182 190 184 188 168 C176 166 166 170 156 166 C152 178 144 178 138 162 Z"
-                    fill="url(#dots-lg)" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-              <path d="M150 128 C168 120 196 120 214 126 M162 95 C178 88 200 88 214 94" fill="none" stroke="var(--box)" stroke-width="3" stroke-linecap="round" opacity=".9"/>
-              <ellipse cx="180" cy="104" rx="26" ry="30" fill="url(#shine)" opacity=".45"/>
-            </svg>
-            <figcaption>The cone in question, as described. Artist&rsquo;s rendering. The real one was red.</figcaption>
-          </figure>
-
-          <p><span class="place">DECATUR, Ill. &mdash;</span> Every evening at six, a small newspaper lands in the inboxes of the people who love him most. He wrote every word of it. More precisely, he said every word of it, into his iPhone, earlier that afternoon.</p>
-          <p>The app is called Papa&rsquo;s Paper, and it has two big buttons. One says <em>Answer a question</em>, and it asks him something worth answering: who taught him to drive, what the kitchen smelled like on Sundays, what he did the day he got home from the service. The other says <em>Tell a story</em>, and simply listens.</p>
-          <p>When he&rsquo;s done, the app asks a short follow-up or two, the kind a curious grandkid would ask. Then one last question: put it in tonight&rsquo;s paper, or keep it private? Private means private. It is never sent to anyone.</p>
-          <p>At six o&rsquo;clock his time, the day&rsquo;s stories are written up as a proper newspaper, headlines and all, in his words, and emailed to everyone on his list.</p>
-          <p>Nobody in the family has to download anything. They read it like any other email, tap a reaction, or write back. Their notes show up on his phone the next time he opens it.</p>
-          <p>If he tells a story he has told before, the paper notices and runs it as a revisit rather than a rerun. On days he has nothing to say, no paper goes out. Nobody gets a blank page.</p>
-
-          <p class="reactions" aria-label="How the family responded to this story in the sample">
-            <span><b>&#x2764;&#xFE0F; 6</b></span>
-            <span><b>&#x1F602; 3</b></span>
-            <span><b>4</b> replies, including one from Aunt Linda: &ldquo;THAT&rsquo;S why we never went back.&rdquo;</span>
-          </p>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="pill"><svg class="icon"><use href="#i-phone"/></svg>Free for iPhone</span>
+        <h1>Grandpa talks.<br>The family gets <em>the paper.<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 110-8 196-3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></em></h1>
+        <p class="lede">Papa&rsquo;s Paper turns a grandparent&rsquo;s spoken stories into a little newspaper that lands in the whole family&rsquo;s inbox <b>every evening at 6</b>. Two big buttons. <b>Nothing to type.</b></p>
+        <div class="cta-row" id="get">
+          <a class="store" href="https://apps.apple.com/app/id6835598942">
+            <svg class="icon"><use href="#i-phone"/></svg>
+            <div><span>Coming soon to the</span><strong>App Store</strong></div>
+          </a>
+          <a class="btn ghost" href="examples.html">See an example paper <svg class="icon"><use href="#i-arrow"/></svg></a>
         </div>
-        <p class="sample-note">This front page is a sample. Yours will be about your grandpa, or your nana, or whoever does the telling in your family.</p>
-      </article>
+        <ul class="chips" aria-label="Highlights">
+          <li><svg class="icon"><use href="#i-tap"/></svg>Two big buttons</li>
+          <li><svg class="icon"><use href="#i-mic"/></svg>Just talk</li>
+          <li><svg class="icon"><use href="#i-mail"/></svg>Family needs no app</li>
+          <li><svg class="icon"><use href="#i-lock"/></svg>Private by choice</li>
+        </ul>
+      </div>
 
-      <aside aria-label="How it works">
-        <div class="forecast">
-          <p class="label"><span>Tonight&rsquo;s forecast</span><span>His time zone</span></p>
-          <dl>
-            <dt>Morning</dt><dd>A gentle nudge. Got a story from the old days?</dd>
-            <dt>Afternoon</dt><dd>Scattered recollections, some lengthy.</dd>
-            <dt>6:00 PM</dt><dd>Paper arrives. Chance of replies: high.</dd>
-          </dl>
+      <div class="stage" aria-label="The Papa's Paper app">
+        <div class="phone back"><img src="img/1-home.jpg" alt="Home screen with two big buttons: Answer a question, and Tell a story" width="600" height="1304"></div>
+        <div class="phone front"><img src="img/2-listening.jpg" alt="The app listening while he answers: Tell me about the house you grew up in" width="600" height="1304"></div>
+        <div class="notif" role="img" aria-label="Email notification: Papa's Paper, The Cherry Dip Cone, Explained at Last">
+          <img src="apple-touch-icon.png" alt="" width="40" height="40">
+          <div>
+            <div class="when"><span>Mail</span><span>6:00 PM</span></div>
+            <b>Papa&rsquo;s Paper &middot; No. 12</b>
+            The Cherry Dip Cone, Explained at Last
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <p class="kicker label">How it works</p>
-        <h3>From his armchair to their inbox in four steps</h3>
-        <ol class="steps">
-          <li><div><b>He taps a big button.</b><span>Answer a question, or tell a story of his own.</span></div></li>
-          <li><div><b>He talks. The app listens.</b><span>A follow-up or two, never more than four.</span></div></li>
-          <li><div><b>He decides.</b><span>Tonight&rsquo;s paper, or kept private.</span></div></li>
-          <li><div><b>The family reads it at six.</b><span>By email, with a way to write back.</span></div></li>
-        </ol>
+  <div class="numbers">
+    <ul class="wrap">
+      <li><strong>2</strong><span>big buttons.<br>That&rsquo;s the whole app.</span></li>
+      <li><strong>0</strong><span>typing while he<br>tells a story</span></li>
+      <li><strong>6&nbsp;PM</strong><span>a fresh paper,<br>every evening</span></li>
+      <li><strong>0</strong><span>apps for the family<br>to install</span></li>
+    </ul>
+  </div>
 
-        <a class="get" href="https://apps.apple.com/app/id6835598942">
-          <span class="label">Coming soon</span>
-          <strong>Papa&rsquo;s Paper on the App Store</strong>
+  <section class="block" id="how">
+    <div class="wrap">
+      <div class="head center">
+        <span class="eyebrow">How it works</span>
+        <h2>From his armchair to their inbox</h2>
+        <p>He tells the story. We set it in type. Everyone reads it with dinner.</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <div class="badge" style="background:var(--terracotta)"><svg class="icon"><use href="#i-mic"/></svg></div>
+          <h3><small>Step 1</small>He talks</h3>
+          <p>He taps <b>Answer a question</b> or <b>Tell a story</b> and just talks. The app asks a follow-up or two, like a curious grandkid would.</p>
+          <div class="shot"><img src="img/2-listening.jpg" alt="" width="600" height="1304" loading="lazy"></div>
+        </li>
+        <li class="step">
+          <div class="badge" style="background:var(--navy)"><svg class="icon"><use href="#i-paper"/></svg></div>
+          <h3><small>Step 2</small>We write it up</h3>
+          <p>At 6 PM his time, the day&rsquo;s stories become a real little newspaper, with headlines, in his own words.</p>
+          <div class="shot"><img src="img/5-paper.jpg" alt="" width="600" height="1304" loading="lazy"></div>
+        </li>
+        <li class="step">
+          <div class="badge" style="background:var(--green)"><svg class="icon"><use href="#i-heart"/></svg></div>
+          <h3><small>Step 3</small>Family writes back</h3>
+          <p>Everyone on his list gets it by email. One tap to react, or write back. He sees every note on his phone.</p>
+          <div class="shot email"><img src="img/email-paper.jpg" alt="" width="1120" height="2160" loading="lazy"></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block tinted" id="grandparents">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">For grandparents</span>
+        <h2>So simple he&rsquo;ll figure it out before you finish explaining</h2>
+        <p>Big type, plain words, and nothing hidden in menus. If he can answer the phone, he can make a paper.</p>
+      </div>
+      <div class="features">
+        <div class="feature"><svg class="icon"><use href="#i-tap"/></svg><h3>Two big buttons</h3><p>&ldquo;Answer a question&rdquo; or &ldquo;Tell a story.&rdquo; That&rsquo;s the whole home screen.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-question"/></svg><h3>Good questions</h3><p>Who taught you to drive? What was Sunday dinner like? It asks out loud, and listens.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-nokeys"/></svg><h3>Nothing to type</h3><p>He talks, then taps &ldquo;I&rsquo;m finished.&rdquo; No keyboard and no spelling.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-speaker"/></svg><h3>Reads it back</h3><p>Every paper is saved in the app, and one button reads it aloud to him.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-globe"/></svg><h3>His language</h3><p>Tell stories in English, Spanish, Chinese, Tagalog, Vietnamese and five more.</p></div>
+        <div class="feature"><svg class="icon"><use href="#i-bell"/></svg><h3>A gentle nudge</h3><p>A friendly reminder during the day, so there&rsquo;s something for tonight&rsquo;s paper.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="families">
+    <div class="wrap split">
+      <div class="inbox">
+        <div class="bar">
+          <img src="apple-touch-icon.png" alt="" width="36" height="36">
+          <div><b>Papa&rsquo;s Paper</b><span>To: the whole family &middot; 6:00 PM</span></div>
+        </div>
+        <div class="mail"><img src="img/email-paper.jpg" alt="A sample paper: The Cherry Dip Cone, Explained at Last, with reaction buttons and a Write back to Papa button" width="1120" height="2160" loading="lazy"></div>
+      </div>
+      <div>
+        <span class="eyebrow">For families</span>
+        <div class="head" style="margin-bottom:0">
+          <h2>All you need is an email address</h2>
+          <p>No app, no account, no password. The paper just shows up.</p>
+        </div>
+        <ul class="checks">
+          <li><span class="dot"><svg class="icon"><use href="#i-mail"/></svg></span><div><b>Arrives by email at 6</b><span>Only on days he has a story, so it never feels like spam.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-heart"/></svg></span><div><b>React with one tap</b><span>&#x2764;&#xFE0F; &#x1F602; &#x1F979; &#x1F44F; right from the email.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-reply"/></svg></span><div><b>Write back</b><span>Your note shows up on his phone the next time he opens it.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-adduser"/></svg></span><div><b>Ask to join</b><span>Every paper has a link to ask for it. He decides who reads it.</span></div></li>
+          <li><span class="dot"><svg class="icon"><use href="#i-repeat"/></svg></span><div><b>Heard it before?</b><span>When he retells a story, the paper notices and runs it as a revisit.</span></div></li>
+        </ul>
+        <a class="btn" href="examples.html">See example papers <svg class="icon"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block privacy" id="privacy">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow"><svg class="icon"><use href="#i-shield"/></svg>Privacy</span>
+        <h2>His stories stay his</h2>
+        <p>He decides what goes in the paper and who reads it. <a href="privacy.html">Read the privacy policy</a>.</p>
+      </div>
+      <div class="grid">
+        <div class="item"><svg class="icon"><use href="#i-lock"/></svg><h3>Private means private</h3><p>After every story he picks: tonight&rsquo;s paper, or keep it private. Private stories are never sent to anyone.</p></div>
+        <div class="item"><svg class="icon"><use href="#i-shield"/></svg><h3>No ads. Nothing sold.</h3><p>His recordings are only used to make his paper. The AI services we use don&rsquo;t train on them.</p></div>
+        <div class="item"><svg class="icon"><use href="#i-trash"/></svg><h3>Delete anytime</h3><p>One button in the app deletes his whole paper and every recording, for good.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block final">
+    <div class="wrap">
+      <img class="appicon" src="icon-512.png" alt="Papa's Paper app icon" width="96" height="96">
+      <h2>Give Grandpa a paper.</h2>
+      <p>Set it up for him in five minutes. Read his first edition tonight.</p>
+      <div class="cta-row">
+        <a class="store" href="https://apps.apple.com/app/id6835598942">
+          <svg class="icon"><use href="#i-phone"/></svg>
+          <div><span>Coming soon to the</span><strong>App Store</strong></div>
         </a>
-        <p class="get-note">Free for iPhone. Set it up for him in about five minutes.</p>
-      </aside>
-    </div>
-
-    <div class="section-head label"><span>Inside this edition</span></div>
-
-    <div class="inside">
-      <section class="story" aria-labelledby="s-family">
-        <p class="kicker label">For the family</p>
-        <h3 id="s-family">Readers Need Nothing but an Email Address</h3>
-        <p>The family doesn&rsquo;t install a thing. He adds your email address, and you get a short welcome note, then the paper on any day there&rsquo;s a story to tell.</p>
-        <p>Not on the list yet? Every paper has a link to ask for it. He gets a big card on his phone that says you&rsquo;d like to read it, and he decides.</p>
-      </section>
-      <section class="story" aria-labelledby="s-private">
-        <p class="kicker label">Privacy</p>
-        <h3 id="s-private">His Stories Stay His</h3>
-        <p>His recordings are used to write his paper and nothing else. No ads, nothing sold, and the AI services we use don&rsquo;t train on what he says.</p>
-        <p>Stories he marks private are never sent to anyone. He can delete his whole paper from the app at any time, and it&rsquo;s gone for good. <a href="privacy.html">Read the privacy policy.</a></p>
-      </section>
-      <section class="story" aria-labelledby="s-design">
-        <p class="kicker label">Design</p>
-        <h3 id="s-design">Built for Big Thumbs and Long Stories</h3>
-        <p>Large type, plain words, two buttons. No menus to get lost in and nothing to type while he&rsquo;s telling a story.</p>
-        <p>He can hear any paper read back to him, and he can tell his stories in English, Spanish and eight other languages.</p>
-      </section>
-    </div>
-
-    <section class="letter" aria-labelledby="editor">
-      <p class="kicker label">From the editor</p>
-      <h3 id="editor">Why There&rsquo;s a Paper at All</h3>
-      <p>I made Papa&rsquo;s Paper for my grandpa. He has more stories than any of us ever had time to hear in one sitting, and he&rsquo;s been planning to tell the big one, his whole life, a chapter at a time.</p>
-      <p>I wanted those stories to have somewhere to land: a little every day, where the whole family could read them and write back. If you have someone like him, I hope it does the same for yours.</p>
-      <p class="sig">Catie, granddaughter and editor</p>
-    </section>
-
-    <div class="section-head label"><span>Classifieds</span></div>
-  </main>
-
-  <footer>
-    <div class="classifieds">
-      <div class="ad">
-        <span class="label">Wanted</span>
-        <p>Grandparents with stories. No experience necessary. Must be willing to talk about the old days. iPhone required.</p>
-      </div>
-      <div class="ad">
-        <span class="label">Lost</span>
-        <p>The rest of that story about the Navy. Last heard at Easter. If found, please record and send in.</p>
-      </div>
-      <div class="ad dark">
-        <span class="label">Family notice</span>
-        <p>Want Grandpa&rsquo;s paper? You don&rsquo;t need the app. Ask him to add you, or ask from the link in any paper.</p>
-      </div>
-      <div class="ad">
-        <span class="label">Help desk</span>
-        <p>Questions, trouble, or kind words: <a href="mailto:support@papaspaper.com">support@papaspaper.com</a>. Answers within a day or two. <a href="support.html">Help page</a>.</p>
-      </div>
-      <div class="ad">
-        <span class="label">For sale</span>
-        <p>Nothing. The paper is free. We don&rsquo;t sell ads, and we don&rsquo;t sell what he tells us.</p>
       </div>
     </div>
+  </section>
+</main>
 
-    <div class="colophon label">
-      <span>&copy; <span id="year">2026</span> Papa&rsquo;s Paper &middot; Printed nowhere, delivered by email</span>
-      <nav aria-label="Site">
-        <a href="support.html">Support</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="mailto:support@papaspaper.com">Contact</a>
-      </nav>
-    </div>
-  </footer>
-</div>
-
-<script>
-  // Today's date and issue number, like a real front page. (The paper started on November 17, 2026.)
-  const now = new Date();
-  document.getElementById("today").textContent =
-    now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  const issue = Math.max(1, Math.floor((now - new Date(2026, 10, 17)) / 86400000) + 1);
-  document.getElementById("volume").textContent = `Vol. ${["I", "II", "III", "IV", "V"][Math.min(4, now.getFullYear() - 2026)]} · No. ${issue}`;
-  document.getElementById("year").textContent = now.getFullYear();
-</script>
+<footer class="site">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="apple-touch-icon.png" alt="" width="30" height="30">Papa&rsquo;s Paper</a>
+    <nav aria-label="Footer">
+      <a href="examples.html">Example papers</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@papaspaper.com">support@papaspaper.com</a>
+    </nav>
+    <span>&copy; 2026 Papa&rsquo;s Paper</span>
+  </div>
+</footer>
 </body>
 </html>
