@@ -27,14 +27,14 @@
 <body>
 <main>
   <div class="masthead"><h1>Papa's Paper</h1><p>Privacy Policy</p></div>
-  <p class="muted">Effective November 16, 2026</p>
+  <p class="muted">Effective November 20, 2026</p>
   <p>Papa's Paper turns a grandparent's spoken stories into a small newspaper that their family gets by email. This page explains what we collect, why, who helps us run the service, and how to have it deleted. We don't sell your information, show ads, or track you across other apps or websites.</p>
 
   <h2>What we collect</h2>
   <ul>
     <li><strong>Your account:</strong> your email address and password. Passwords are stored only in hashed form by our database provider.</li>
     <li><strong>Your profile:</strong> the name your family calls you, the pronouns the paper uses, the language you speak in, and your phone's time zone (so the paper arrives in the evening your time).</li>
-    <li><strong>Your stories:</strong> the voice recordings you make in the app, written transcripts of them, and any photos you choose to go with a story. Stories you mark &ldquo;keep it private&rdquo; are stored with your account but are never put in a paper or sent to anyone.</li>
+    <li><strong>Your stories:</strong> the voice recordings you make in the app, written transcripts of them, and any photos you choose to go with a story. Stories you mark &ldquo;keep it private&rdquo; are stored with your account but are never put in a paper or sent to anyone. If you fix words, rename or reorder a story, or edit a previewed paper, we keep your edited version.</li>
     <li><strong>Your family list:</strong> the names and email addresses of the people you add to receive your paper.</li>
     <li><strong>Family responses:</strong> the emoji reactions and written replies family members send from the paper, and their name as you entered it.</li>
   </ul>
@@ -44,7 +44,9 @@
   <ul>
     <li>To ask your permission first: before your first story, the app explains where your recordings and photos go and asks you to agree.</li>
     <li>To have a conversation with you: your recordings are turned into text, and the text is used to choose a follow-up question.</li>
-    <li>To write and email your paper each evening to the family members you added, using the stories you chose to include.</li>
+    <li>To show your words on screen while you talk. This uses your iPhone&rsquo;s own speech recognition, on the phone itself, and isn&rsquo;t sent anywhere. You can turn it off in Settings &rarr; Papa&rsquo;s Paper &rarr; Speech Recognition.</li>
+    <li>To organize your stories: each story is split into titled pieces with chapters, so you can read it over, fix words and put it in order.</li>
+    <li>To write and email your paper each evening to the family members you added (or only the people you choose for that day), using the stories you chose to include. If you preview the paper first, we save the preview so the evening paper matches it.</li>
     <li>To show you your past papers and your family's reactions and replies in the app.</li>
     <li>To let you sign back in on a new phone and get your paper back, and to email you a link if you forget your password.</li>
   </ul>
@@ -55,7 +57,7 @@
   <ul>
     <li><strong>Supabase</strong> stores your account, stories, recordings, photos, family list and papers.</li>
     <li><strong>OpenAI</strong> turns your voice recordings into text and reads the app's questions aloud in a natural voice.</li>
-    <li><strong>Anthropic</strong> (Claude) reads your transcripts to choose follow-up questions, and reads the stories and photos you included to write each evening's paper.</li>
+    <li><strong>Anthropic</strong> (Claude) reads your transcripts to choose follow-up questions, to sort your stories into titled pieces and chapters, and reads the stories and photos you included to write each evening's paper.</li>
     <li><strong>Resend</strong> delivers the paper and welcome emails to your family, and password-reset emails to you.</li>
   </ul>
   <p>Under their terms for business customers, OpenAI and Anthropic don't use information sent through their APIs to train their models.</p>
