@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Papa's Paper</title>
+<script>
+  // Short paper links: papaspaper.com/p/<paper id> opens the "Ask for the paper" page.
+  // (GitHub Pages has no server routes, so every unknown path lands here first.)
+  (function () {
+    var m = location.pathname.match(/\/p\/([0-9a-fA-F-]{36})\/?$/);
+    if (m) location.replace("/join.html?p=" + m[1].toLowerCase());
+  })();
+</script>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f6f1e7; color: #1d1a16; font: 18px/1.5 Georgia, serif; text-align: center; padding: 24px; }
+  @media (prefers-color-scheme: dark) { body { background: #1c1a17; color: #f3eee4; } a { color: #db7a4e; } }
+  h1 { font-size: 30px; margin: 0 0 8px; }
+  a { color: #b4532a; font-weight: bold; }
+</style>
+</head>
+<body>
+  <main>
+    <h1>Papa&rsquo;s Paper</h1>
+    <p>We couldn&rsquo;t find that page.</p>
+    <p><a href="/">Go to papaspaper.com</a></p>
+  </main>
+</body>
+</html>
